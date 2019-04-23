@@ -294,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/Nvidia-Tx2-TooKit-使用-JetPackk安装AI开发环境/">
+    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/使用OpenCv-VideoCapture函数打开Jetson-Tx2板载摄像头/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mrpeng">
@@ -314,7 +314,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/year/04/23/Nvidia-Tx2-TooKit-使用-JetPackk安装AI开发环境/" class="post-title-link" itemprop="url">Nvidia Tx2 TooKit 使用 JetPackk安装AI开发环境”</a>
+                <a href="/year/04/23/使用OpenCv-VideoCapture函数打开Jetson-Tx2板载摄像头/" class="post-title-link" itemprop="url">使用OpenCv VideoCapture函数打开Jetson Tx2板载摄像头</a>
               
             
           </h1>
@@ -339,7 +339,344 @@
                 
               
 
-              <time title="Created: 2019-04-23 14:02:25 / Modified: 14:41:23" itemprop="dateCreated datePublished" datetime="2019-04-23T14:02:25+08:00">2019-04-23</time>
+              <time title="Created: 2019-04-23 15:13:14 / Modified: 15:26:04" itemprop="dateCreated datePublished" datetime="2019-04-23T15:13:14+08:00">2019-04-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">WINDOW_NAME = <span class="string">"CAM"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">open_window</span><span class="params">(width, height)</span>:</span></span><br><span class="line">    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)</span><br><span class="line">    cv2.resizeWindow(WINDOW_NAME, width, height)</span><br><span class="line">    cv2.moveWindow(WINDOW_NAME, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    cv2.setWindowTitle(WINDOW_NAME, <span class="string">'Camera Demo for Jetson TX2/TX1'</span>)</span><br><span class="line">open_window(<span class="number">1920</span>, <span class="number">1080</span>)</span><br><span class="line">cap = cv2.VideoCapture(<span class="string">"nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)2592, height=(int)1458, format=(string)I420, framerate=(fraction)30/1 ! nvvidconv ! video/x-raw, width=(int)1920, height=(int)1080, format=(string)BGRx ! videoconvert ! appsink"</span>,cv2.CAP_GSTREAMER)</span><br><span class="line"><span class="keyword">while</span> cap.isOpened():</span><br><span class="line">	_, frame = cap.read()</span><br><span class="line">	cv2.imshow(WINDOW_NAME, frame)</span><br><span class="line">	key = cv2.waitKey(<span class="number">10</span>)</span><br><span class="line">	<span class="keyword">if</span> key == <span class="number">27</span>: <span class="comment"># ESC key: quit program</span></span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>关键代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cap = cv2.VideoCapture(<span class="string">"nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)2592, height=(int)1458, format=(string)I420, framerate=(fraction)30/1 ! nvvidconv ! video/x-raw, width=(int)1920, height=(int)1080, format=(string)BGRx ! videoconvert ! appsink"</span>,cv2.CAP_GSTREAMER)</span><br></pre></td></tr></table></figure>
+<p>打开usb摄像头，RTSP摄像头请参考<code>trgre_cam.py</code>文件</p>
+<details><br><summary>详细代码</summary><br><pre><code><br>import sys<br>import argparse<br>import cv2<br>WINDOW_NAME = ‘CameraDemo’<br>def parse_args():<br>    # Parse input arguments<br>    desc = ‘Capture and display live camera video on Jetson TX2/TX1’<br>    parser = argparse.ArgumentParser(description=desc)<br>    parser.add_argument(‘–rtsp’, dest=’use_rtsp’,<br>                        help=’use IP CAM (remember to also set –uri)’,<br>                        action=’store_true’)<br>    parser.add_argument(‘–uri’, dest=’rtsp_uri’,<br>                        help=’RTSP URI, e.g. rtsp://192.168.1.64:554’,<br>                        default=None, type=str)<br>    parser.add_argument(‘–latency’, dest=’rtsp_latency’,<br>                        help=’latency in ms for RTSP [200]’,<br>                        default=200, type=int)<br>    parser.add_argument(‘–usb’, dest=’use_usb’,<br>                        help=’use USB webcam (remember to also set –vid)’,<br>                        action=’store_true’)<br>    parser.add_argument(‘–vid’, dest=’video_dev’,<br>                        help=’device # of USB webcam (/dev/video?) [1]’,<br>                        default=1, type=int)<br>    parser.add_argument(‘–width’, dest=’image_width’,<br>                        help=’image width [1920]’,<br>                        default=1920, type=int)<br>    parser.add_argument(‘–height’, dest=’image_height’,<br>                        help=’image height [1080]’,<br>                        default=1080, type=int)<br>    args = parser.parse_args()<br>    return args<br>def open_cam_rtsp(uri, width, height, latency):<br>    gst_str = (‘rtspsrc location={} latency={} ! ‘<br>               ‘rtph264depay ! h264parse ! omxh264dec ! ‘<br>               ‘nvvidconv ! ‘<br>               ‘video/x-raw, width=(int){}, height=(int){}, ‘<br>               ‘format=(string)BGRx ! ‘<br>               ‘videoconvert ! appsink’).format(uri, latency, width, height)<br>    return cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)<br>    def open_cam_usb(dev, width, height):<br>    #     return cv2.VideoCapture(dev)<br>​    gst_str = (‘v4l2src device=/dev/video{} ! ‘<br>​               ‘video/x-raw, width=(int){}, height=(int){}, ‘<br>​               ‘format=(string)RGB ! ‘<br>​               ‘videoconvert ! appsink’).format(dev, width, height)<br>​    return cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)<br>def open_cam_onboard(width, height):<br>    # On versions of L4T prior to 28.1, add ‘flip-method=2’ into gst_str<br>    gst_str = (‘nvcamerasrc ! ‘<br>               ‘video/x-raw(memory:NVMM), ‘<br>               ‘width=(int)2592, height=(int)1458, ‘<br>               ‘format=(string)I420, framerate=(fraction)30/1 ! ‘<br>               ‘nvvidconv ! ‘<br>               ‘video/x-raw, width=(int){}, height=(int){}, ‘<br>               ‘format=(string)BGRx ! ‘<br>               ‘videoconvert ! appsink’).format(width, height)<br>    print(gst_str)<br>    return cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)<br>def open_window(width, height):<br>    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)<br>    cv2.resizeWindow(WINDOW_NAME, width, height)<br>    cv2.moveWindow(WINDOW_NAME, 0, 0)<br>    cv2.setWindowTitle(WINDOW_NAME, ‘Camera Demo for Jetson TX2/TX1’)<br>def read_cam(cap):<br>    show_help = True<br>    full_scrn = False<br>    help_text = ‘“Esc” to Quit, “H” for Help, “F” to Toggle Fullscreen’<br>    font = cv2.FONT_HERSHEY_PLAIN<br>    while True:<br>        if cv2.getWindowProperty(WINDOW_NAME, 0) &lt; 0:<br>            # Check to see if the user has closed the window<br>            # If yes, terminate the program<br>​            break<br>​        _, img = cap.read() # grab the next image frame from camera<br>​        if show_help:<br>​            cv2.putText(img, help_text, (11, 20), font,<br>​                        1.0, (32, 32, 32), 4, cv2.LINE_AA)<br>​            cv2.putText(img, help_text, (10, 20), font,<br>​                        1.0, (240, 240, 240), 1, cv2.LINE_AA)<br>​        cv2.imshow(WINDOW_NAME, img)<br>​        key = cv2.waitKey(10)<br>​        if key == 27: # ESC key: quit program<br>​            break<br>​        elif key == ord(‘H’) or key == ord(‘h’): # toggle help message<br>​            show_help = not show_help<br>​        elif key == ord(‘F’) or key == ord(‘f’): # toggle fullscreen<br>​            full_scrn = not full_scrn<br>​            if full_scrn:<br>​                cv2.setWindowProperty(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN,<br>​                                      cv2.WINDOW_FULLSCREEN)<br>​            else:<br>​                cv2.setWindowProperty(WINDOW_NAME, cv2.WND_PROP_FULLSCREEN,<br>​                                      cv2.WINDOW_NORMAL)<br>def main():<br>    args = parse_args()<br>    print(‘Called with args:’)<br>    print(args)<br>    print(‘OpenCV version: {}’.format(cv2.<strong>version</strong>))<br>    if args.use_rtsp:<br>        cap = open_cam_rtsp(args.rtsp_uri,<br>                            args.image_width,<br>                            args.image_height,<br>                            args.rtsp_latency)<br>    elif args.use_usb:<br>        cap = open_cam_usb(args.video_dev,<br>                           args.image_width,<br>                           args.image_height)<br>    else: # by default, use the Jetson onboard camera<br>        cap = open_cam_onboard(args.image_width,<br>                               args.image_height)<br>    if not cap.isOpened():<br>        sys.exit(‘Failed to open camera!’)<br>    open_window(args.image_width, args.image_height)<br>    read_cam(cap)<br>    cap.release()<br>    cv2.destroyAllWindows()<br>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>    main()<br></code></pre><br></details>
+
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/Nvidia-TX2-开发板深度学习开发环境搭建教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mrpeng">
+      <meta itemprop="description" content="情不知所以，一往情深。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Obey">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/year/04/23/Nvidia-TX2-开发板深度学习开发环境搭建教程/" class="post-title-link" itemprop="url">Nvidia Tx2 TooKit 安装TensorFlow1.6，Caffer，ROS_Kinetic</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-23 14:57:43 / Modified: 15:09:54" itemprop="dateCreated datePublished" datetime="2019-04-23T14:57:43+08:00">2019-04-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-说明"><a href="#1-说明" class="headerlink" title="1| 说明"></a>1| 说明</h2><ul>
+<li>只在TX2测试过</li>
+<li>在Jetpack3.3版本测试</li>
+</ul>
+<h2 id="2-搭建步骤"><a href="#2-搭建步骤" class="headerlink" title="2| 搭建步骤"></a>2| 搭建步骤</h2><ol>
+<li><p>ssh连接Tx2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh nvidia@ip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更改apt为国内源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ sudo  cp /etc/apt/sources.list /etc/apt/sources.list.back</span><br><span class="line">$ sudo nano /etc/apt/sources.list</span><br><span class="line">// 复制以下内容</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse  </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">// 安装python3 的pip包管理器</span><br><span class="line">$ sudo apt-get install python3-pip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从GitHub Clone安装脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads</span><br><span class="line">// Clone Tensorflow安装.whl文件</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/openzeka/Tensorflow-for-Jetson-TX2.git</span><br><span class="line">// Clone Caffe安装脚本</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/jetsonhacks/installCaffeJTX2.git</span><br><span class="line">// Clone ROS Kinetic 安装脚本</span><br><span class="line">$ git  <span class="built_in">clone</span> https://github.com/jetsonhacks/installROSTX2.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<ul>
+<li><p>tensorflow1.6</p>
+<ul>
+<li><p>python3.5</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ./Tensorflow-for-Jetson-TX2/Jetpack-3.2/1.6</span><br><span class="line">$ sudo pip3 install tensorflow-1.6.0rc1-cp35-cp35m-linux_aarch64.whl</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Caffer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads/installcaddeJTX2/</span><br><span class="line">$ sudo ./installCaffe.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Ros Kinetic</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads/installROSTX2</span><br><span class="line">$ sudo  ./installROS.sh -p ros-kinetic-desktop -p ros-kinetic-rgbd-launch</span><br><span class="line">$ sudo ./setupCatkinWorkspace.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>验证安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python3 </span><br><span class="line"> &gt;&gt;&gt; import tensorflow</span><br><span class="line">// 不报错表示tensorflow安装成功</span><br><span class="line"> &gt;&gt;&gt; import caffe</span><br><span class="line">// 不报错表示caffe安装成功</span><br><span class="line"> &gt;&gt;&gt; <span class="built_in">exit</span>()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看安装的ros版本</p>
+<ol>
+<li>先在终端输入<code>roscore</code></li>
+<li>新终端输入，<code>rosparam list</code></li>
+<li>再输入<code>rosparam get /rosdistro</code>就能得到版本</li>
+</ol>
+</li>
+<li>至此TX2环境搭建完成。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/Nvidia-Tx2-TooKit-使用-JetPackk安装AI开发环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mrpeng">
+      <meta itemprop="description" content="情不知所以，一往情深。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Obey">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/year/04/23/Nvidia-Tx2-TooKit-使用-JetPackk安装AI开发环境/" class="post-title-link" itemprop="url">Nvidia Tx2 TooKit 使用 JetPackk安装AI开发环境</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-23 14:02:25 / Modified: 14:57:34" itemprop="dateCreated datePublished" datetime="2019-04-23T14:02:25+08:00">2019-04-23</time>
             
 
             
@@ -554,7 +891,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
