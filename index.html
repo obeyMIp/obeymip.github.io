@@ -294,6 +294,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/24/在Nvidia-Tx2-JetPack版本3-3上安装opencv3-4-1-dev-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mrpeng">
+      <meta itemprop="description" content="情不知所以，一往情深。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Obey">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/year/04/24/在Nvidia-Tx2-JetPack版本3-3上安装opencv3-4-1-dev-md/" class="post-title-link" itemprop="url">在Nvidia-Tx2-JetPack版本3_3上安装opencv3_4_1-dev.md</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-24 09:03:51 / Modified: 10:01:50" itemprop="dateCreated datePublished" datetime="2019-04-24T09:03:51+08:00">2019-04-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="步骤如下"><a href="#步骤如下" class="headerlink" title="步骤如下"></a>步骤如下</h2><ol>
+<li><p>TX2刷机时预装了OpenCV，因此需要卸载掉并重新安装。查看JetPack自带的OpenCV版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pkg-config --modversion opencv</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载TX2已经安装好的OpenCV4Tegra</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get purge libopencv*</span><br><span class="line">$ sudo apt autoremove</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新安装openCV, <a href="https://github.com/jetsonhacks/buildOpenCVTX2" target="_blank" rel="noopener">https://github.com/jetsonhacks/buildOpenCVTX2</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/jetsonhacks/buildOpenCVTX2.git</span><br><span class="line">$ <span class="built_in">cd</span> buildOpenCVTX2</span><br><span class="line">$ ./buildOpenCV.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>由于是从源码构建,需要等待2小时</p>
+</li>
+<li><p>安装完成后,查看openCV版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -c <span class="string">"import cv2;print(cv2.__version__)"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3.4.1-dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/使用OpenCv-VideoCapture函数打开Jetson-Tx2板载摄像头/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -891,7 +1050,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
