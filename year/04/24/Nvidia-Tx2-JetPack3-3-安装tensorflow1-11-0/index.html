@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="1| 说明 只在TX2测试过 在Jetpack3.3版本测试  2| 搭建步骤 ssh连接Tx2 1$ ssh nvidia@ip  更改apt为国内源 1234567891011$ sudo  cp /etc/apt/sources.list /etc/apt/sources.list.back$ sudo nano /etc/apt/sources.list// 复制以下内容deb http:">
+  <meta name="description" content="仅在JetPack 3.3上测试通过   步骤如下 查看cuda版本, 需要cuda-9.0 12$ cd /usr/local$ ls -l  安装pip3包管理器 12$ sudo apt-get install python3-pip$ pip3 --version  升级pip3到最新版本 123$ sudo pip3 install --upgrade setuptools pip$">
 <meta name="keywords" content="Nvidia Tx2 Tookit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Nvidia Tx2 TooKit 安装TensorFlow1.6，Caffer，ROS_Kinetic">
-<meta property="og:url" content="http://obeyMIp.github.io/year/04/23/Nvidia-TX2-开发板深度学习开发环境搭建教程/index.html">
+<meta property="og:title" content="Nvidia Tx2 JetPack3_3 安装tensorflow1.11.0">
+<meta property="og:url" content="http://obeyMIp.github.io/year/04/24/Nvidia-Tx2-JetPack3-3-安装tensorflow1-11-0/index.html">
 <meta property="og:site_name" content="Obey">
-<meta property="og:description" content="1| 说明 只在TX2测试过 在Jetpack3.3版本测试  2| 搭建步骤 ssh连接Tx2 1$ ssh nvidia@ip  更改apt为国内源 1234567891011$ sudo  cp /etc/apt/sources.list /etc/apt/sources.list.back$ sudo nano /etc/apt/sources.list// 复制以下内容deb http:">
+<meta property="og:description" content="仅在JetPack 3.3上测试通过   步骤如下 查看cuda版本, 需要cuda-9.0 12$ cd /usr/local$ ls -l  安装pip3包管理器 12$ sudo apt-get install python3-pip$ pip3 --version  升级pip3到最新版本 123$ sudo pip3 install --upgrade setuptools pip$">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-23T07:09:54.827Z">
+<meta property="og:updated_time" content="2019-04-24T02:27:40.198Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nvidia Tx2 TooKit 安装TensorFlow1.6，Caffer，ROS_Kinetic">
-<meta name="twitter:description" content="1| 说明 只在TX2测试过 在Jetpack3.3版本测试  2| 搭建步骤 ssh连接Tx2 1$ ssh nvidia@ip  更改apt为国内源 1234567891011$ sudo  cp /etc/apt/sources.list /etc/apt/sources.list.back$ sudo nano /etc/apt/sources.list// 复制以下内容deb http:">
+<meta name="twitter:title" content="Nvidia Tx2 JetPack3_3 安装tensorflow1.11.0">
+<meta name="twitter:description" content="仅在JetPack 3.3上测试通过   步骤如下 查看cuda版本, 需要cuda-9.0 12$ cd /usr/local$ ls -l  安装pip3包管理器 12$ sudo apt-get install python3-pip$ pip3 --version  升级pip3到最新版本 123$ sudo pip3 install --upgrade setuptools pip$">
 
 
 
@@ -115,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="http://obeyMIp.github.io/year/04/23/Nvidia-TX2-开发板深度学习开发环境搭建教程/">
+  <link rel="canonical" href="http://obeyMIp.github.io/year/04/24/Nvidia-Tx2-JetPack3-3-安装tensorflow1-11-0/">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>Nvidia Tx2 TooKit 安装TensorFlow1.6，Caffer，ROS_Kinetic | Obey</title>
+  <title>Nvidia Tx2 JetPack3_3 安装tensorflow1.11.0 | Obey</title>
   
 
 
@@ -294,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/23/Nvidia-TX2-开发板深度学习开发环境搭建教程/">
+    <link itemprop="mainEntityOfPage" href="http://obeyMIp.github.io/year/04/24/Nvidia-Tx2-JetPack3-3-安装tensorflow1-11-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mrpeng">
@@ -311,7 +311,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Nvidia Tx2 TooKit 安装TensorFlow1.6，Caffer，ROS_Kinetic
+          <h1 class="post-title" itemprop="name headline">Nvidia Tx2 JetPack3_3 安装tensorflow1.11.0
 
               
             
@@ -337,7 +337,7 @@
                 
               
 
-              <time title="Created: 2019-04-23 14:57:43 / Modified: 15:09:54" itemprop="dateCreated datePublished" datetime="2019-04-23T14:57:43+08:00">2019-04-23</time>
+              <time title="Created: 2019-04-24 10:04:11 / Modified: 10:27:40" itemprop="dateCreated datePublished" datetime="2019-04-24T10:04:11+08:00">2019-04-24</time>
             
 
             
@@ -376,51 +376,34 @@
       
 
       
-        <h2 id="1-说明"><a href="#1-说明" class="headerlink" title="1| 说明"></a>1| 说明</h2><ul>
-<li>只在TX2测试过</li>
-<li>在Jetpack3.3版本测试</li>
+        <ul>
+<li>仅在JetPack 3.3上测试通过</li>
 </ul>
-<h2 id="2-搭建步骤"><a href="#2-搭建步骤" class="headerlink" title="2| 搭建步骤"></a>2| 搭建步骤</h2><ol>
-<li><p>ssh连接Tx2</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh nvidia@ip</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="步骤如下"><a href="#步骤如下" class="headerlink" title="步骤如下"></a>步骤如下</h2><ol>
+<li><p>查看cuda版本, 需要cuda-9.0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">$ ls -l</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>更改apt为国内源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ sudo  cp /etc/apt/sources.list /etc/apt/sources.list.back</span><br><span class="line">$ sudo nano /etc/apt/sources.list</span><br><span class="line">// 复制以下内容</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse  </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse   </span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted   </span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted</span><br></pre></td></tr></table></figure>
+<li><p>安装pip3包管理器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install python3-pip</span><br><span class="line">$ pip3 --version</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">// 安装python3 的pip包管理器</span><br><span class="line">$ sudo apt-get install python3-pip</span><br></pre></td></tr></table></figure>
+<li><p>升级pip3到最新版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip3 install --upgrade setuptools pip</span><br><span class="line">$ pip3 --version</span><br><span class="line">$ sudo pip3 install --upgrade pip</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>从GitHub Clone安装脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads</span><br><span class="line">// Clone Tensorflow安装.whl文件</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/openzeka/Tensorflow-for-Jetson-TX2.git</span><br><span class="line">// Clone Caffe安装脚本</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/jetsonhacks/installCaffeJTX2.git</span><br><span class="line">// Clone ROS Kinetic 安装脚本</span><br><span class="line">$ git  <span class="built_in">clone</span> https://github.com/jetsonhacks/installROSTX2.git</span><br></pre></td></tr></table></figure>
+<li><p>关于pip3 报from XXX main错误,修改如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /usr/bin/pip3</span><br><span class="line">// 修改成如下:</span><br><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># GENERATED BY DEBIAN</span></span><br><span class="line">import sys</span><br><span class="line">from pip import __main__</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    sys.exit(__main__._main())</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>安装</p>
-<ul>
-<li><p>tensorflow1.6</p>
-<ul>
-<li><p>python3.5</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ./Tensorflow-for-Jetson-TX2/Jetpack-3.2/1.6</span><br><span class="line">$ sudo pip3 install tensorflow-1.6.0rc1-cp35-cp35m-linux_aarch64.whl</span><br></pre></td></tr></table></figure>
+<li><p>解决hdf5.h头文件找不到的问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install libhdf5-dev</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
+<li><p>出<a href="https://nvidia.app.box.com/v/JP33-TF1-11-0-py35-wTRT" target="_blank" rel="noopener">https://nvidia.app.box.com/v/JP33-TF1-11-0-py35-wTRT</a>下载tensorflow1.11.0 for aarch64 文件</p>
 </li>
-<li><p>Caffer</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads/installcaddeJTX2/</span><br><span class="line">$ sudo ./installCaffe.sh</span><br></pre></td></tr></table></figure>
+<li><p>安装tensorflow</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pip3 install tensorflow-1.11.0-cp35-cp35m-linux_aarch64.whl</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Ros Kinetic</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/Downloads/installROSTX2</span><br><span class="line">$ sudo  ./installROS.sh -p ros-kinetic-desktop -p ros-kinetic-rgbd-launch</span><br><span class="line">$ sudo ./setupCatkinWorkspace.sh</span><br></pre></td></tr></table></figure>
+<li><p>查看tensorflow版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -c <span class="string">"import tensorflow as tf;print(tf.__version__)"</span></span><br><span class="line">// 输出 1.11.0</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-</li>
-<li><p>验证安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ python3 </span><br><span class="line"> &gt;&gt;&gt; import tensorflow</span><br><span class="line">// 不报错表示tensorflow安装成功</span><br><span class="line"> &gt;&gt;&gt; import caffe</span><br><span class="line">// 不报错表示caffe安装成功</span><br><span class="line"> &gt;&gt;&gt; <span class="built_in">exit</span>()</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看安装的ros版本</p>
-<ol>
-<li>先在终端输入<code>roscore</code></li>
-<li>新终端输入，<code>rosparam list</code></li>
-<li>再输入<code>rosparam get /rosdistro</code>就能得到版本</li>
-</ol>
-</li>
-<li>至此TX2环境搭建完成。</li>
 </ol>
 
       
@@ -458,8 +441,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/year/04/23/Nvidia-Tx2-TooKit-使用-JetPackk安装AI开发环境/" rel="next" title="Nvidia Tx2 TooKit 使用 JetPackk安装AI开发环境">
-                <i class="fa fa-chevron-left"></i> Nvidia Tx2 TooKit 使用 JetPackk安装AI开发环境
+              <a href="/year/04/24/在Nvidia-Tx2-JetPack版本3-3上安装opencv3-4-1-dev-md/" rel="next" title="在Nvidia-Tx2-JetPack版本3_3上安装opencv3_4_1-dev.md">
+                <i class="fa fa-chevron-left"></i> 在Nvidia-Tx2-JetPack版本3_3上安装opencv3_4_1-dev.md
               </a>
             
           </div>
@@ -467,10 +450,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/year/04/23/使用OpenCv-VideoCapture函数打开Jetson-Tx2板载摄像头/" rel="prev" title="使用OpenCv VideoCapture函数打开Jetson Tx2板载摄像头">
-                使用OpenCv VideoCapture函数打开Jetson Tx2板载摄像头 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -594,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-说明"><span class="nav-number">1.</span> <span class="nav-text">1| 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-搭建步骤"><span class="nav-number">2.</span> <span class="nav-text">2| 搭建步骤</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤如下"><span class="nav-number">1.</span> <span class="nav-text">步骤如下</span></a></li></ol></div>
             
 
           </div>
